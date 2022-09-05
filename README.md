@@ -1,1 +1,1 @@
-root directory
+shell input and output redirections
