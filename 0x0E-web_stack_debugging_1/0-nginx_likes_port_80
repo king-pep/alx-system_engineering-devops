@@ -1,5 +1,14 @@
-#!/usr/bin/env bash
-# configures a server to listening on port 80 of all server's active IPv4 IPs
+#!/bin/bash
 
-sudo sed -i "s/8080/80/" /etc/nginx/sites-enabled/default
-sudo service nginx restart
+# Install Nginx if it is not already installed
+nginx -v || sudo apt-get install nginx
+
+# Start Nginx if it is not already running
+systemctl status nginx || sudo systemctl start nginx
+
+# Configure Nginx to listen on port 80
+sudo sed -i 's/listen\s*80;/listen 80 default_server;/g' /etc/nginx/sites-available/default
+
+# Allow traffic on port 80 through the firewall
+sudo ufw allow 80/tcp
+
