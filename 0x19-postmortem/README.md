@@ -13,7 +13,7 @@ A social media application that allows users to connect and interact with each o
 
 ## Issue Summary
 
-Duration: August 10, 2023, 2:00 PM - August 11, 2023, 10:00 AM (GMT)
+Duration: August 10, 2021, 2:00 PM - August 11, 2021, 10:00 AM (GMT)
 
 The outage impacted my personal project, a social media application, resulting in users experiencing difficulties accessing the platform, posting content, and interacting with other users. This outage affected all users of the application, impacting their ability to use the platform's features and engage with the community.
 
@@ -21,12 +21,12 @@ The root cause of the issue was identified as a database failure due to a miscon
 
 ## Timeline
 
-- **August 10, 2023, 2:00 PM**: The issue was detected when users reported slow performance and errors while using the social media application.
-- **August 10, 2023, 2:10 PM**: Investigation began to identify the cause of the disruption, suspecting a server or database issue.
-- **August 10, 2023, 2:30 PM**: Analysis revealed a database failure caused by a misconfiguration during routine maintenance.
-- **August 10, 2023, 3:00 PM**: The incident was escalated to the database administrator and development team for further analysis and resolution.
-- **August 10, 2023, 4:00 PM**: The misconfiguration was identified and corrected, and database connectivity was restored.
-- **August 11, 2023, 10:00 AM**: Full service recovery was confirmed, and users regained complete access to the social media application.
+- **August 10, 2021, 2:00 PM**: The issue was detected when users reported slow performance and errors while using the social media application.
+- **August 10, 2021, 2:10 PM**: Investigation began to identify the cause of the disruption, suspecting a server or database issue.
+- **August 10, 2021, 2:30 PM**: Analysis revealed a database failure caused by a misconfiguration during routine maintenance.
+- **August 10, 2021, 3:00 PM**: The incident was escalated to the database administrator and development team for further analysis and resolution.
+- **August 10, 2021, 4:00 PM**: The misconfiguration was identified and corrected, and database connectivity was restored.
+- **August 11, 2021, 10:00 AM**: Full service recovery was confirmed, and users regained complete access to the social media application.
 
 ## Root Cause and Resolution
 
