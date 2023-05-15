@@ -50,12 +50,4 @@ To prevent similar incidents and enhance the reliability of the social media app
 - Regularly perform backup and recovery drills to verify the effectiveness of disaster recovery mechanisms.
 - Provide clear and timely communication to users during incidents, including updates on progress and expected resolution times.
 
-## Code Snippets
 
-Example of connecting to the database:
-
-```python
-import psycopg2
-
-# Connect to the database
-conn = psycopg2.connect(database="your_database", user="your_user", password="your_password", host="your_host", port="your_port")
