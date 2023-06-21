@@ -45,8 +45,7 @@ def count_words(subreddit, word_list, after=None, word_dic=None):
             post = child.get("data")
             title = post.get("title").lower()
             for word in word_list:
-                if title.count(word.lower()) > 0:
-                    word_dic[word.lower()] += title.count(word.lower())
+                word_dic[word.lower()] += title.count(' ' + word.lower() + ' ')
     except:
         return None
 
