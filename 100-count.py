@@ -1,7 +1,7 @@
 from requests import get
 
 REDDIT = "https://www.reddit.com/"
-HEADERS = {'user-agent': 'my-app/0.0.1'}
+HEADERS = {'User-Agent': 'Mozilla/5.0'}
 
 
 def count_words(subreddit, word_list, after=None, word_dic=None):
@@ -45,10 +45,9 @@ def count_words(subreddit, word_list, after=None, word_dic=None):
             post = child.get("data")
             title = post.get("title").lower()
             for word in word_list:
-                if word.lower() in title:
-                    word_dic[word.lower()] += 1
+                if title.count(word.lower()) > 0:
+                    word_dic[word.lower()] += title.count(word.lower())
     except:
         return None
 
     return count_words(subreddit, word_list, after, word_dic)
-
