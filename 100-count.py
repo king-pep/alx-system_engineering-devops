@@ -4,20 +4,20 @@ REDDIT = "https://www.reddit.com/"
 HEADERS = {'user-agent': 'my-app/0.0.1'}
 
 
-def count_words(subreddit, word_list, after="", word_dic=None):
+def count_words(subreddit, word_list, after=None, word_dic=None):
     if word_dic is None:
         word_dic = {}
 
     if not word_dic:
         for word in word_list:
-            word_dic[word] = 0
+            word_dic[word.lower()] = 0
 
     if after is None:
         sorted_words = sorted(word_dic.items(), key=lambda x: (-x[1], x[0]))
         results = []
         for word, count in sorted_words:
             if count > 0:
-                results.append("{}: {}".format(word.lower(), count))
+                results.append("{}: {}".format(word, count))
         return results
 
     url = REDDIT + "r/{}/hot/.json".format(subreddit)
@@ -43,11 +43,12 @@ def count_words(subreddit, word_list, after="", word_dic=None):
         children = data.get("children")
         for child in children:
             post = child.get("data")
-            title = post.get("title")
-            lower = [s.lower() for s in title.split(' ')]
+            title = post.get("title").lower()
             for word in word_list:
-                word_dic[word] += lower.count(word.lower())
+                if word.lower() in title:
+                    word_dic[word.lower()] += 1
     except:
         return None
 
     return count_words(subreddit, word_list, after, word_dic)
+
