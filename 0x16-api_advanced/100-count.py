@@ -1,53 +1,51 @@
-from requests import get
+import requests
 
-REDDIT = "https://www.reddit.com/"
-HEADERS = {'User-Agent': 'Mozilla/5.0'}
+REDDIT_URL = "https://www.reddit.com/"
 
 
-def count_words(subreddit, word_list, after=None, word_dic=None):
-    if word_dic is None:
-        word_dic = {}
-
-    if not word_dic:
-        for word in word_list:
-            word_dic[word.lower()] = 0
+def count_words(subreddit, word_list, after=None, word_dict=None):
+    if word_dict is None:
+        word_dict = {}
 
     if after is None:
-        sorted_words = sorted(word_dic.items(), key=lambda x: (-x[1], x[0]))
+        sorted_words = sorted(word_dict.items(), key=lambda x: (-x[1], x[0]))
         results = []
         for word, count in sorted_words:
             if count > 0:
                 results.append("{}: {}".format(word, count))
         return results
 
-    url = REDDIT + "r/{}/hot/.json".format(subreddit)
+    url = REDDIT_URL + "r/{}/hot.json".format(subreddit)
+    headers = {'User-Agent': 'Mozilla/5.0'}
 
     params = {
         'limit': 100,
         'after': after
     }
 
-    r = get(url, headers=HEADERS, params=params, allow_redirects=False)
+    response = requests.get(url, headers=headers, params=params)
 
-    if r.status_code != 200:
+    if response.status_code != 200:
         return None
 
     try:
-        js = r.json()
+        data = response.json()
     except ValueError:
         return None
 
     try:
-        data = js.get("data")
-        after = data.get("after")
-        children = data.get("children")
+        after = data['data']['after']
+        children = data['data']['children']
         for child in children:
-            post = child.get("data")
-            title = post.get("title").lower()
+            post = child['data']
+            title = post['title']
             for word in word_list:
-                if ' ' + word.lower() + ' ' in title:
-                    word_dic[word.lower()] += 1
-    except:
+                lowercase_word = word.lower()
+                lowercase_title = title.lower()
+                if (' ' + lowercase_word + ' ') in (' ' + lowercase_title + ' '):
+                    word_dict[lowercase_word] = word_dict.get(lowercase_word, 0) + 1
+    except KeyError:
         return None
 
-    return count_words(subreddit, word_list, after, word_dic)
+    return count_words(subreddit, word_list, after, word_dict)
+
