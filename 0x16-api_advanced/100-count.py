@@ -1,51 +1,61 @@
-import requests
+#!/usr/bin/python3
+""" Count it! """
+from requests import get
 
-REDDIT_URL = "https://www.reddit.com/"
+REDDIT = "https://www.reddit.com/"
+HEADERS = {'user-agent': 'my-app/0.0.1'}
 
 
-def count_words(subreddit, word_list, after=None, word_dict=None):
-    if word_dict is None:
-        word_dict = {}
+def count_words(subreddit, word_list, after="", word_dic={}):
+    """
+    Returns a list containing the titles of all hot articles for a
+    given subreddit. If no results are found for the given subreddit,
+    the function should return None.
+    """
+    if not word_dic:
+        for word in word_list:
+            word_dic[word] = 0
 
     if after is None:
-        sorted_words = sorted(word_dict.items(), key=lambda x: (-x[1], x[0]))
-        results = []
-        for word, count in sorted_words:
-            if count > 0:
-                results.append("{}: {}".format(word, count))
-        return results
+        word_list = [[key, value] for key, value in word_dic.items()]
+        word_list = sorted(word_list, key=lambda x: (-x[1], x[0]))
+        for w in word_list:
+            if w[1]:
+                print("{}: {}".format(w[0].lower(), w[1]))
+        return None
 
-    url = REDDIT_URL + "r/{}/hot.json".format(subreddit)
-    headers = {'User-Agent': 'Mozilla/5.0'}
+    url = REDDIT + "r/{}/hot/.json".format(subreddit)
 
     params = {
         'limit': 100,
         'after': after
     }
 
-    response = requests.get(url, headers=headers, params=params)
+    r = get(url, headers=HEADERS, params=params, allow_redirects=False)
 
-    if response.status_code != 200:
+    if r.status_code != 200:
         return None
 
     try:
-        data = response.json()
+        js = r.json()
+
     except ValueError:
         return None
 
     try:
-        after = data['data']['after']
-        children = data['data']['children']
+
+        data = js.get("data")
+        after = data.get("after")
+        children = data.get("children")
         for child in children:
-            post = child['data']
-            title = post['title']
-            for word in word_list:
-                lowercase_word = word.lower()
-                lowercase_title = title.lower()
-                if (' ' + lowercase_word + ' ') in (' ' + lowercase_title + ' '):
-                    word_dict[lowercase_word] = word_dict.get(lowercase_word, 0) + 1
-    except KeyError:
+            post = child.get("data")
+            title = post.get("title")
+            lower = [s.lower() for s in title.split(' ')]
+
+            for w in word_list:
+                word_dic[w] += lower.count(w.lower())
+
+    except:
         return None
 
-    return count_words(subreddit, word_list, after, word_dict)
-
+    count_words(subreddit, word_list, after, word_dic)
